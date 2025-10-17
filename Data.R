@@ -11,7 +11,7 @@ library(tidyverse)
 # Systems
 # ----------------------------
 system_df <- tribble(
-  ~owner,      ~name,            ~manufacturer, ~model,       ~type,       ~stand,         ~geometry,  ~location,
+  ~owner,      ~system_name,    ~manufacturer, ~model,       ~type,       ~stand,         ~geometry,  ~location,
   "center",    "880_Invert",     "Zeiss",       "LSM 880",    "confocal",  "Observer.Z1",  "inverted", "4.1",
   "center",    "800_Fish",       "Zeiss",       "LSM 800",    "confocal",  "Examiner.Z1",  "upright",  "4.1",
   "center",    "800_Histology",  "Zeiss",       "LSM 800",    "confocal",  "Imager.Z2",    "upright",  "4.1",
@@ -38,7 +38,7 @@ system_df <- tribble(
 # correction, special
 # ----------------------------
 lens_df <- tribble(
-  ~owner, ~system, ~class, ~manufacturer, ~catalog_number, ~magnification, ~numerical_aperture,
+  ~owner, ~system_name, ~objective_class, ~manufacturer, ~catalog_number, ~magnification, ~numerical_aperture,
   ~working_distance, ~coverslip_thickness, ~thread, ~immersion, ~correction, ~special,
   
   # -- Lenses from the inverted 880 (center)
@@ -147,24 +147,6 @@ lens_df <- tribble(
   "Long","Nikon_AX","Plan Apo","Nikon","MRD73250",25,1.05,0.55,0.11,"M25X0.75","silicone oil","yes",NA
 )
 
-# Ensure column types are consistent and rename to the cleaned names used in the app
-lens_df <- lens_df %>%
-  rename(
-    owner = owner,
-    system_name = system,
-    objective_class = class,
-    manufacturer = manufacturer,
-    catalog_number = catalog_number,
-    magnification = magnification,
-    numerical_aperture = numerical_aperture,
-    working_distance = working_distance,
-    coverslip_thickness = coverslip_thickness,
-    thread = thread,
-    immersion = immersion,
-    correction = correction,
-    special = special
-  )
-
 # Convert numeric-looking columns to numeric (they may already be)
 lens_df <- lens_df %>%
   mutate(
@@ -174,11 +156,9 @@ lens_df <- lens_df %>%
     coverslip_thickness = as.numeric(coverslip_thickness)
   )
 
-# For system_df rename 'name' to 'system_name' to match usage in the app
-system_df <- system_df %>% rename(system_name = name)
 
 # ----------------------------
-# Detectors (empty per original)
+# Detectors 
 # ----------------------------
 detector_df <- tibble(
   owner = character(0),
@@ -244,7 +224,7 @@ system_df <- system_df %>%
          location = ifelse(is.na(location) | location == "", NA, location)
   )
 
-# Makre sure there are no capitals in the immersion and that the objective_class
+# Make sure there are no capitals in the immersion and that the objective_class
 # is of type character.
 lens_df <- lens_df %>%
   mutate(

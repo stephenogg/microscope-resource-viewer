@@ -1,7 +1,7 @@
 # =============================================================================
 # App.R
 # Microscope Resource Visualization (with linked filtering)
-# Loads microscope_dat.RData (created by Data.R)
+# Loads microscope_data.RData (created by Data.R)
 # =============================================================================
 
 library(shiny)
@@ -9,6 +9,10 @@ library(tidyverse)
 library(DT)
 library(shinyWidgets)
 library(bslib)
+library(stringr)
+
+# Load the cleaned data
+load("microscope_data.RData") # system_df, lens_df, detector_df, column_help
 
 
 
@@ -47,9 +51,10 @@ ui <- fluidPage(
                  
                  hr(),
                  h4("Customize Table"),
+
                  checkboxGroupInput("columns_sys", "Columns to Display:",
                                     choices = names(system_df), selected = names(system_df)),
-                 br(),
+                 br(), 
                  actionButton("reset_sys", "Reset Filters", icon = icon("undo")),
                  br(), br(),
                  actionButton("info_sys", "ℹ️ Column Info")
@@ -83,6 +88,11 @@ ui <- fluidPage(
                              max = ceiling(max(lens_df$magnification, na.rm = TRUE)),
                              value = c(floor(min(lens_df$magnification, na.rm = TRUE)), ceiling(max(lens_df$magnification, na.rm = TRUE))),
                              step = 1),
+                 sliderInput("na_filter_len", "Numerical Aperture Range:",
+                             min = floor(min(lens_df$numerical_aperture, na.rm = TRUE)),
+                             max = plyr::round_any(max(lens_df$numerical_aperture, na.rm = TRUE), accuracy = 0.1, f= ceiling),
+                             value = c(floor(min(lens_df$numerical_aperture, na.rm = TRUE)), ceiling(max(lens_df$numerical_aperture, na.rm = TRUE))),
+                             step = 0.1),
                  
                  hr(),
                  h4("Customize Table"),
@@ -137,9 +147,7 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   
-  # Load the cleaned data
-  load("microscope_data.RData") # system_df, lens_df, detector_df, column_help
-  
+
   # --- Reactive filtered systems (used for DT display and selection)
   filtered_sys <- reactive({
     df <- system_df
@@ -228,6 +236,9 @@ server <- function(input, output, session) {
     if (!is.null(input$mag_filter_len)) {
       df <- df %>% filter(!is.na(magnification) & magnification >= input$mag_filter_len[1] & magnification <= input$mag_filter_len[2])
     }
+    if (!is.null(input$na_filter_len)) {
+      df <- df %>% filter(!is.na(numerical_aperture) & numerical_aperture >= input$na_filter_len[1] & numerical_aperture <= input$na_filter_len[2])
+    }
     df
   })
   
@@ -246,6 +257,8 @@ server <- function(input, output, session) {
     updatePickerInput(session, "imm_filter_len", selected = character(0))
     updateSliderInput(session, "mag_filter_len",
                       value = c(floor(min(lens_df$magnification, na.rm = TRUE)), ceiling(max(lens_df$magnification, na.rm = TRUE))))
+    updateSliderInput(session, "na_filter_len",
+                      value = c(floor(min(lens_df$numerical_aperture, na.rm = TRUE)), ceiling(max(lens_df$numerical_aperture, na.rm = TRUE))))
     updateCheckboxGroupInput(session, "columns_len", selected = names(lens_df))
   })
   
