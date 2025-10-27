@@ -53,7 +53,7 @@ ui <- fluidPage(
                  h4("Customize Table"),
 
                  checkboxGroupInput("columns_sys", "Columns to Display:",
-                                    choices = names(system_df), selected = names(system_df)),
+                                    choices = names(system_df)[!names(system_df) == "owner_system"], selected = names(system_df)[!names(system_df) == "owner_system"]),
                  br(), 
                  actionButton("reset_sys", "Reset Filters", icon = icon("undo")),
                  br(), br(),
@@ -176,7 +176,7 @@ server <- function(input, output, session) {
     if (length(sel_rows) > 0) {
       # We must use the same ordering as displayed in the table (filtered_sys())
       displayed <- filtered_sys()
-      selected_systems <- displayed$system_name[sel_rows]
+      selected_systems <- displayed$owner_system[sel_rows]
       # Update Lenses system picker to only those selected systems
       updatePickerInput(session, "system_filter_len", selected = selected_systems)
       # Update Detectors picker (if detectors table has that column)
@@ -220,12 +220,12 @@ server <- function(input, output, session) {
     sel_rows <- input$systems_table_rows_selected
     if (!is.null(sel_rows) && length(sel_rows) > 0) {
       displayed <- filtered_sys()
-      selected_systems <- displayed$system_name[sel_rows]
-      df <- df %>% filter(system_name %in% selected_systems)
+      selected_systems <- displayed$owner_system[sel_rows]
+      df <- df %>% filter(owner_system %in% selected_systems)
     } else {
       # Otherwise consider the Lenses system picker
       if (!is.null(input$system_filter_len) && length(input$system_filter_len) > 0) {
-        df <- df %>% filter(system_name %in% input$system_filter_len)
+        df <- df %>% filter(owner_system %in% input$system_filter_len)
       }
     }
     
