@@ -1,0 +1,13 @@
+name: CentreScopes
+title: CentreScopes
+username: steveo
+account: steveo
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 15892999
+bundleId: 11096194
+url: https://steveo.shinyapps.io/CentreScopes/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: .Rprofile|app2.R|Data.R|lenses|renv.lock|systems|docs

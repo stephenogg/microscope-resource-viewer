@@ -97,7 +97,7 @@ ui <- fluidPage(
                  hr(),
                  h4("Customize Table"),
                  checkboxGroupInput("columns_len", "Columns to Display:",
-                                    choices = names(lens_df), selected = names(lens_df)),
+                                    choices = names(lens_df)[!names(lens_df) == "owner_system"], selected = names(lens_df)[!names(lens_df) == "owner_system"]),
                  br(),
                  actionButton("reset_len", "Reset Filters", icon = icon("undo")),
                  br(), br(),
@@ -127,7 +127,7 @@ ui <- fluidPage(
                  hr(),
                  h4("Customize Table"),
                  checkboxGroupInput("columns_det", "Columns to Display:",
-                                    choices = names(detector_df), selected = names(detector_df)),
+                                    choices = names(detector_df)[!names(detector_df) == "owner_system"], selected = names(detector_df)[!names(detector_df) == "owner_system"]),
                  br(),
                  actionButton("reset_det", "Reset Filters", icon = icon("undo")),
                  br(), br(),
@@ -138,7 +138,8 @@ ui <- fluidPage(
                  h4("Detectors"),
                  DTOutput("detectors_table"),
                  br(),
-                 tags$em("Detector table is empty until detector_df is populated in Data.R.")
+                 tags$em("Tip: Systems selection in the Systems tab will filter this table automatically."),
+                
                )
              )
     )
@@ -165,7 +166,7 @@ server <- function(input, output, session) {
       filtered_sys()[, input$columns_sys, drop = FALSE],
       selection = list(mode = "multiple", selected = NULL, target = "row"),
       extensions = "Buttons",
-      options = list(pageLength = 10, scrollX = TRUE, dom = "Bfrtip", buttons = c("copy","csv","excel")),
+      options = list(pageLength = 10, scrollX = TRUE, dom = "Bfrltip", buttons = c("copy","csv","excel")),
       rownames = FALSE, class = "display compact nowrap"
     )
   }, server = FALSE)
@@ -179,10 +180,9 @@ server <- function(input, output, session) {
       selected_systems <- displayed$owner_system[sel_rows]
       # Update Lenses system picker to only those selected systems
       updatePickerInput(session, "system_filter_len", selected = selected_systems)
-      # Update Detectors picker (if detectors table has that column)
-      if ("system_name" %in% names(detector_df)) {
-        updatePickerInput(session, "system_filter_det", selected = selected_systems[selected_systems %in% unique(detector_df$system_name)])
-      }
+      # Update Detectors picker
+      updatePickerInput(session, "system_filter_det", selected = selected_systems)
+      
     } else {
       # no selection -> clear lens & detector system filters (but do not change other lens filters)
       updatePickerInput(session, "system_filter_len", selected = character(0))
@@ -246,7 +246,7 @@ server <- function(input, output, session) {
     datatable(
       filtered_len()[, input$columns_len, drop = FALSE],
       extensions = "Buttons",
-      options = list(pageLength = 10, scrollX = TRUE, dom = "Bfrtip", buttons = c("copy","csv","excel")),
+      options = list(pageLength = 10, scrollX = TRUE, dom = "Bfrltip", buttons = c("copy","csv","excel")),
       rownames = FALSE, class = "display compact nowrap"
     )
   }, server = FALSE)
@@ -277,16 +277,11 @@ server <- function(input, output, session) {
     sel_rows <- input$systems_table_rows_selected
     if (!is.null(sel_rows) && length(sel_rows) > 0) {
       displayed <- filtered_sys()
-      selected_systems <- displayed$system_name[sel_rows]
-      if ("system_name" %in% names(df)) {
-        df <- df %>% filter(system_name %in% selected_systems)
-      } else {
-        # detector_df empty or has no system_name column; just return df
-        df <- df
-      }
+      selected_systems <- displayed$owner_system[sel_rows]
+      df <- df %>% filter(owner_system %in% selected_systems)
     } else {
-      if (!is.null(input$system_filter_det) && length(input$system_filter_det) > 0 && "system_name" %in% names(df)) {
-        df <- df %>% filter(system_name %in% input$system_filter_det)
+      if (!is.null(input$system_filter_det) && length(input$system_filter_det) > 0) {
+        df <- df %>% filter(owner_system %in% input$system_filter_det)
       }
     }
     
@@ -295,16 +290,12 @@ server <- function(input, output, session) {
   })
   
   output$detectors_table <- renderDT({
-    if (ncol(detector_df) == 0) {
-      datatable(data.frame(Message = "No detector data available. Populate detector_df in Data.R."), options = list(dom = 't'))
-    } else {
       datatable(
         filtered_det()[, input$columns_det, drop = FALSE],
         extensions = "Buttons",
-        options = list(pageLength = 10, scrollX = TRUE, dom = "Bfrtip", buttons = c("copy","csv","excel")),
+        options = list(pageLength = 10, scrollX = TRUE, dom = "Bfrltip", buttons = c("copy","csv","excel")),
         rownames = FALSE, class = "display compact nowrap"
       )
-    }
   }, server = FALSE)
   
   observeEvent(input$reset_det, {
@@ -314,7 +305,35 @@ server <- function(input, output, session) {
   })
   
   observeEvent(input$info_det, {
-    showModal(modalDialog(title = "Detectors help", "Detector table is a placeholder until detector_df is populated in Data.R.", easyClose = TRUE, footer = modalButton("Close")))
+    showModal(modalDialog(
+      title = "Detector columns help",
+      HTML(paste0("<ul>", paste0("<li><b>", names(column_help$detector_df), "</b>: ", unlist(column_help$detector_df), collapse = "</li><li>"), "</li></ul>")),
+      easyClose = TRUE, footer = modalButton("Close")
+    ))
+  })
+  
+  # Click detector row → show full details in modal
+  observeEvent(input$detectors_table_rows_selected, {
+    sel_row <- input$detectors_table_rows_selected
+    if (length(sel_row) == 1) {
+      row_data <- filtered_det()[sel_row, , drop = FALSE]
+      if (row_data$type %in% c("CCD", "emCCD", "sCMOS")) {
+        filtered_data <- camera_df |>
+          filter(owner_system == row_data$owner_system & name == row_data$name)
+      } else {
+        if (row_data$type %in% c("PMT", "HyD")){
+          filtered_data <- pmt_df |>
+            filter(owner_system == row_data$owner_system & name == row_data$name)
+        }
+      }
+      details_html <- paste0("<ul>", paste0("<li><b>", names(filtered_data), ":</b> ", as.character(filtered_data), collapse = "</li><li>"), "</li></ul>")
+      showModal(modalDialog(
+        title = paste("Detector Details -", row_data$system_name),
+        HTML(details_html),
+        easyClose = TRUE,
+        footer = modalButton("Close")
+      ))
+    }
   })
 }
 

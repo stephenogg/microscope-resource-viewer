@@ -187,36 +187,36 @@ lens_df <- lens_df %>%
 detector_types <- c("CCD", "emCCD","sCMOS", "PMT", "APD", "HyD")
 
 detector_df <- tribble(
-  ~owner, ~system_name, ~model, ~catalog_number, ~manufacturer, ~type,
+  ~owner, ~system_name, ~name, ~catalog_number, ~manufacturer, ~type,
   
   # Detectors from Queelim Ch'ng's microscopes
   "Ch'ng", "WF_1", "Orca-R2", "C10600-10B", "Hamamatsu", "CCD",
   "Ch'ng", "WF_2", "Orca-D2", "C11254-10B", "Hamamatsu", "CCD",
   
   # Detectors from the centre's microscopes
-  "Center", "800_Fish", "Ch1", NA, "Carl Zeiss GmbH", "PMT",
-  "Center", "800_Fish", "Ch2", NA, "Carl Zeiss GmbH", "PMT",
-  "Center", "800_Fish", "Airyscan", NA, "Carl Zeiss GmbH", "PMT",
+  "center", "800_Fish", "Ch1", NA, "Carl Zeiss GmbH", "PMT",
+  "center", "800_Fish", "Ch2", NA, "Carl Zeiss GmbH", "PMT",
+  "center", "800_Fish", "Airyscan", NA, "Carl Zeiss GmbH", "PMT",
   
-  "Center", "800_Histology", "Ch1", NA, "Carl Zeiss GmbH", "PMT",
-  "Center", "800_Histology", "Ch2", NA, "Carl Zeiss GmbH", "PMT",
-  "Center", "800_Histology", "Airyscan", NA, "Carl Zeiss GmbH", "PMT",
+  "center", "800_Histology", "Ch1", NA, "Carl Zeiss GmbH", "PMT",
+  "center", "800_Histology", "Ch2", NA, "Carl Zeiss GmbH", "PMT",
+  "center", "800_Histology", "Airyscan", NA, "Carl Zeiss GmbH", "PMT",
   
-  "Center", "880_Invert", "Ch1", NA, "Carl Zeiss GmbH", "PMT",
-  "Center", "880_Invert", "ChS1", NA, "Carl Zeiss GmbH", "PMT",
-  "Center", "880_Invert", "Ch2", NA, "Carl Zeiss GmbH", "PMT",
-  "Center", "880_Invert", "Airyscan", NA, "Carl Zeiss GmbH", "PMT",
+  "center", "880_Invert", "Ch1", NA, "Carl Zeiss GmbH", "PMT",
+  "center", "880_Invert", "ChS1", NA, "Carl Zeiss GmbH", "PMT",
+  "center", "880_Invert", "Ch2", NA, "Carl Zeiss GmbH", "PMT",
+  "center", "880_Invert", "Airyscan", NA, "Carl Zeiss GmbH", "PMT",
   
-  "Center", "880_Upright", "Ch1", NA, "Carl Zeiss GmbH", "PMT",
-  "Center", "880_Upright", "ChS1", NA, "Carl Zeiss GmbH", "PMT",
-  "Center", "880_Upright", "Ch2", NA, "Carl Zeiss GmbH", "PMT",
-  "Center", "880_Upright", "Airyscan", NA, "Carl Zeiss GmbH", "PMT",
+  "center", "880_Upright", "Ch1", NA, "Carl Zeiss GmbH", "PMT",
+  "center", "880_Upright", "ChS1", NA, "Carl Zeiss GmbH", "PMT",
+  "center", "880_Upright", "Ch2", NA, "Carl Zeiss GmbH", "PMT",
+  "center", "880_Upright", "Airyscan", NA, "Carl Zeiss GmbH", "PMT",
   
-  "Center", "AxioScan.Z1", "Axiocam 506m", NA, "Carl Zeiss GmbH", "CCD",
-  "Center", "AxioScan.Z1", "Axiocam 105", NA, "Carl Zeiss GmbH", "CCD",
-  "Center", "AxioScan.Z1", "Hitachi F203SCL", NA, "Hitachi", "CCD",
+  "center", "AxioScan.Z1", "Axiocam 506m", NA, "Carl Zeiss GmbH", "CCD",
+  "center", "AxioScan.Z1", "Axiocam 105c", NA, "Carl Zeiss GmbH", "CCD",
+  "center", "AxioScan.Z1", "Hitachi F203SCL", NA, "Hitachi", "CCD",
   
-  "Center", "Ultramicroscope", "pco.EDGE", NA, "Photon Lines Optical Solutions", "sCMOS",
+  "center", "Ultramicroscope", "pco.EDGE", NA, "Photon Lines Optical Solutions", "sCMOS",
 
   
   "Marín", "Apotome", "Axiocam 503m", "426559-0000-000", "Carl Zeiss GmbH", "CCD",
@@ -230,7 +230,7 @@ detector_df <- tribble(
   
   "Rico", "Stellaris", "HyDS1", NA, "Leica Microsystems", "HyD",
   "Rico", "Stellaris", "HyDS2", NA, "Leica Microsystems", "HyD",
-  "Rico", "Stellaris", "HyDS3", NA, "Leica Microsystems", "HyD",
+  "Rico", "Stellaris", "HyDX3", NA, "Leica Microsystems", "HyD",
   "Rico", "Stellaris", "HyDX4", NA, "Leica Microsystems", "HyD",
 
   
@@ -252,9 +252,11 @@ detector_df <- tribble(
 
 
 detector_df$type <- factor(detector_df$type, levels = detector_types)
+detector_df <- detector_df |>
+  mutate(owner_system = paste(owner,"_", system_name))
 
 camera_df <- tribble(
-  ~owner, ~system, ~name, ~array_width, ~array_height, ~pixel_width, ~pixel_height, ~pixel_size_unit, ~full_well_capacity,
+  ~owner, ~system_name, ~name, ~array_width, ~array_height, ~pixel_width, ~pixel_height, ~pixel_size_unit, ~full_well_capacity,
   ~max_digitization_bit_depth, ~read_noise, ~readout_speed, ~fps, ~dynamic_range, ~exp_time_min, ~exp_time_max, ~exp_time_unit, 
   ~gain, ~electron_conversion_factor, ~quantum_efficiency, ~color, ~offset,
   
@@ -274,35 +276,39 @@ camera_df <- tribble(
   "Berninger", "WF_Invert", "Axiocam 503m", 1936, 1460, 4.54, 4.54, "micrometers", 15000, 14, 6, 13, 38, 2500, 0.000250, 60, "seconds", NA, NA, 0.76, FALSE, NA,
   "Berninger", "WF_Invert", "Axiocam 503m", 1936, 1460, 4.54, 4.54, "micrometers", 15000, 14, 6.5, 39, 38, 2300, 0.000250, 60, "seconds", NA, NA, 0.76, FALSE, NA,
   
-  "Center", "Axioscan.Z1", "Axiocam 506m", 2752, 2208, 4.54, 4.54, "micrometers", 15000, 14, 6, 13, 20, 2500, 0.000250, 60, "seconds", NA, NA, 0.76, FALSE, NA,
-  "Center", "Axioscan.Z1", "Axiocam 105c", 2560, 1920, 2.2, 2.2, "micrometers", NA, 8, NA, NA, 15, NA, 0.000030, 1, "seconds", NA, NA, NA, TRUE, NA,
-  "Center", "Axioscan.Z1", "Hitachi F203SCL", 1600, 1200, 4.4, 4.4, "micrometers", NA, 8, NA, 72, 30, 2500, 0.00001, 1, "seconds", NA, NA, 0.76, TRUE, NA,
+  "center", "AxioScan.Z1", "Axiocam 506m", 2752, 2208, 4.54, 4.54, "micrometers", 15000, 14, 6, 13, 20, 2500, 0.000250, 60, "seconds", NA, NA, 0.76, FALSE, NA,
+  "center", "AxioScan.Z1", "Axiocam 105c", 2560, 1920, 2.2, 2.2, "micrometers", NA, 8, NA, NA, 15, NA, 0.000030, 1, "seconds", NA, NA, NA, TRUE, NA,
+  "center", "AxioScan.Z1", "Hitachi F203SCL", 1600, 1200, 4.4, 4.4, "micrometers", NA, 8, NA, 72, 30, 2500, 0.00001, 1, "seconds", NA, NA, 0.76, TRUE, NA,
+  
+  "center", "Ultramicroscope", "pco.EDGE", 2048, 2048, 6.5, 6.5, "micrometers", NA, NA, 0.8, NA, 100, NA, NA, NA, NA, NA, NA, 0.82, FALSE, NA,
   
   "Long", "Olympus_WF", "CellCam 4612MT", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA
-  
-  
 )
+camera_df <- camera_df |>
+  mutate(owner_system = paste(owner,"_", system_name))
+
+
 
 pmt_df <- tribble(
-  ~owner, ~system, ~name, ~coating, ~operating_speed, ~response_time, ~response_time_unit, ~dead_time, ~dead_time_response_unit, ~radiant_sensitivity, ~multi_anode, ~multi_anode_number, ~multi_anode_arrangement,
+  ~owner, ~system_name, ~name, ~coating, ~operating_speed, ~response_time, ~response_time_unit, ~dead_time, ~dead_time_response_unit, ~radiant_sensitivity, ~multi_anode, ~multi_anode_number, ~multi_anode_arrangement,
   
-  "Center", "800_Fish", "Ch1", "GaAsP", NA, NA, NA, NA, NA, NA, FALSE, NA, NA,
-  "Center", "800_Fish", "Ch2", "GaAsP", NA, NA, NA, NA, NA, NA, FALSE, NA, NA,
-  "Center", "800_Fish", "Airyscan", "GaAsP", NA, NA, NA, NA, NA, NA, TRUE, 32, "round",
+  "center", "800_Fish", "Ch1", "GaAsP", NA, NA, NA, NA, NA, NA, FALSE, NA, NA,
+  "center", "800_Fish", "Ch2", "GaAsP", NA, NA, NA, NA, NA, NA, FALSE, NA, NA,
+  "center", "800_Fish", "Airyscan", "GaAsP", NA, NA, NA, NA, NA, NA, TRUE, 32, "round",
   
-  "Center", "800_Histology", "Ch1", "GaAsP", NA, NA, NA, NA, NA, NA, FALSE, NA, NA,
-  "Center", "800_Histology", "Ch2", "GaAsP", NA, NA, NA, NA, NA, NA, FALSE, NA, NA,
-  "Center", "800_Histology", "Airyscan", "GaAsP", NA, NA, NA, NA, NA, NA, TRUE, 32, "round",
+  "center", "800_Histology", "Ch1", "GaAsP", NA, NA, NA, NA, NA, NA, FALSE, NA, NA,
+  "center", "800_Histology", "Ch2", "GaAsP", NA, NA, NA, NA, NA, NA, FALSE, NA, NA,
+  "center", "800_Histology", "Airyscan", "GaAsP", NA, NA, NA, NA, NA, NA, TRUE, 32, "round",
   
-  "Center", "880_Invert", "Ch1", "GaAsP", NA, NA, NA, NA, NA, NA, FALSE, NA, NA,
-  "Center", "880_Invert", "ChS1", "GaAsP", NA, NA, NA, NA, NA, NA, TRUE, 32, "linear",
-  "Center", "880_Invert", "Ch2", "GaAsP", NA, NA, NA, NA, NA, NA, FALSE, NA, NA,
-  "Center", "880_Invert", "Airyscan", "GaAsP", NA, NA, NA, NA, NA, NA, TRUE, 32, "round",
+  "center", "880_Invert", "Ch1", "GaAsP", NA, NA, NA, NA, NA, NA, FALSE, NA, NA,
+  "center", "880_Invert", "ChS1", "GaAsP", NA, NA, NA, NA, NA, NA, TRUE, 32, "linear",
+  "center", "880_Invert", "Ch2", "GaAsP", NA, NA, NA, NA, NA, NA, FALSE, NA, NA,
+  "center", "880_Invert", "Airyscan", "GaAsP", NA, NA, NA, NA, NA, NA, TRUE, 32, "round",
   
-  "Center", "880_Upright", "Ch1", "GaAsP", NA, NA, NA, NA, NA, NA, FALSE, NA, NA,
-  "Center", "880_Upright", "ChS1", "GaAsP", NA, NA, NA, NA, NA, NA, TRUE, 32, "linear",
-  "Center", "880_Upright", "Ch2", "GaAsP", NA, NA, NA, NA, NA, NA, FALSE, NA, NA,
-  "Center", "880_Upright", "Airyscan", "GaAsP", NA, NA, NA, NA, NA, NA, TRUE, 32, "round",
+  "center", "880_Upright", "Ch1", "GaAsP", NA, NA, NA, NA, NA, NA, FALSE, NA, NA,
+  "center", "880_Upright", "ChS1", "GaAsP", NA, NA, NA, NA, NA, NA, TRUE, 32, "linear",
+  "center", "880_Upright", "Ch2", "GaAsP", NA, NA, NA, NA, NA, NA, FALSE, NA, NA,
+  "center", "880_Upright", "Airyscan", "GaAsP", NA, NA, NA, NA, NA, NA, TRUE, 32, "round",
   
   "Berninger", "880_Invert", "Ch1", "GaAsP", NA, NA, NA, NA, NA, NA, FALSE, NA, NA,
   "Berninger", "880_Invert", "ChS1", "GaAsP", NA, NA, NA, NA, NA, NA, TRUE, 32, "linear",
@@ -324,12 +330,10 @@ pmt_df <- tribble(
   "Long", "Nikon_AX_R", "1", "unknown", NA, NA, NA, NA, NA, NA, FALSE, NA, NA,
   
   "Grubb", "LSM_710", "Ch1", "unknown", NA, NA, NA, NA, NA, NA, FALSE, NA, NA
-  
-  
-  
-  
 )
 
+pmt_df <- pmt_df |>
+  mutate(owner_system = paste(owner,"_", system_name))
   
 
 # ----------------------------
@@ -431,6 +435,8 @@ lens_df <- lens_df %>%
     immersion = tolower(as.character(immersion)),
     objective_class = as.character(objective_class)
   )
+
+
 
 # ----------------------------
 # Save consolidated data
