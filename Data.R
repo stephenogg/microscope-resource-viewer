@@ -12,26 +12,36 @@ library(tidyverse)
 # ----------------------------
 system_df <- tribble(
   ~owner,      ~system_name,    ~manufacturer, ~model,       ~type,       ~stand,         ~geometry, ~serial_number,  ~location,
-  "center",    "880_Invert",     "Zeiss",       "LSM 880",    "confocal",  "Observer.Z1",  "inverted", "2802100109",  "4.1",
-  "center",    "800_Fish",       "Zeiss",       "LSM 800",    "confocal",  "Examiner.Z1",  "upright",  "2633000481",  "4.1",
-  "center",    "800_Histology",  "Zeiss",       "LSM 800",    "confocal",  "Imager.Z2",    "upright",  "2633000464",  "4.1",
-  "center",    "Ultramicroscope","Miltenyi",    "Blaze",      "lightsheet","",             "upright",  "",            "4.3P",
-  "center",    "880_Upright",    "Zeiss",       "LSM 880",    "confocal",  "Examiner.Z1",  "upright",  "2850000158",  "4.9",
-  "center",    "AxioScan.Z1",    "Zeiss",       "AxioScan.Z1","widefield", "",             "upright",  "4646000314",  "4.3P",
-  "Marín",     "Apotome",        "Zeiss",       "Apotome",    "widefield", "Imager.M2",    "upright",  "3525001936",  "4.3D",
-  "Marín",     "coppaFISH",      "Nikon",       "Ti2E",       "widefield", "Eclipse Ti2E", "invert",   "552005",      "4.3D",
-  "Marín",     "Scientifica",    "",             "",          "multiphoton","",            "invert",     "",          "4.33",
-  "Berninger", "880_Invert",     "Zeiss",       "LSM 880",    "confocal",  "Observer",     "invert",   "2850000269",  "4.11",
-  "Berninger", "WF_Invert",      "Zeiss",       "Observer",   "widefield", "Observer 7",   "invert",   "3858002107",  "4.11",
-  "Ch'ng",     "WF_1",           "Nikon",       "Eclipse TiE","widefield", "TiE",          "invert",   "536592",      "4.7",
-  "Ch'ng",     "WF_2",           "Nikon",       "Eclipse TiE","widefield", "TiE",          "invert",   "531964",      "4.7",
-  "Long",      "Nikon_AX",       "Nikon",       "Eclipse Ti2E","confocal", "Ti2E",         "inverted", "551770",      "4.33C",
-  "Grubb",     "LSM_710",        "Zeiss",       "LSM 710",    "confocal",  "Examiner",     "upright",  "2502000475",  "4.33",
-  "Rico",      "Leica SP8",      "Leica",       "SP8",        "confocal",  "DMI 6000 B",   "invert",   "8100000479",  "4.3D",
-  "Rico",      "Stellaris",      "Leica",       "Stellaris",  "confocal",  "DMi 8",        "invert",   "8400000342",  "4.3D",
-  "Long",      "Olympus_WF",     "Olympus",     "IX 70",      "widefield", "IX 70",        "invert",   "8K18177",     "4.33B",
-  "Long",      "Nikon_AX_R",     "Nikon",       "Niokon AX R","confocal",  "Eclipse Ti2E", "invert",   "",            "4.33B"
-)
+  "center",    "880_Invert",     "Zeiss",       "LSM 880",     "confocal",  "Observer.Z1",  "inverted", "2802100109",  "4.1",
+  "center",    "800_Fish",       "Zeiss",       "LSM 800",     "confocal",  "Examiner.Z1",  "upright",  "2633000481",  "4.1",
+  "center",    "800_Histology",  "Zeiss",       "LSM 800",     "confocal",  "Imager.Z2",    "upright",  "2633000464",  "4.1",
+  "center",    "Ultramicroscope","Miltenyi",    "Blaze",       "lightsheet","",             "upright",  "",            "4.3P",
+  "center",    "880_Upright",    "Zeiss",       "LSM 880",     "confocal",  "Examiner.Z1",  "upright",  "2850000158",  "4.9",
+  "center",    "AxioScan.Z1",    "Zeiss",       "AxioScan.Z1", "widefield", "",             "upright",  "4646000314",  "4.3P",
+  "Marín",     "Apotome",        "Zeiss",       "Apotome",     "widefield", "Imager.M2",    "upright",  "3525001936",  "4.3D",
+  "Marín",     "coppaFISH",      "Nikon",       "Ti2E",        "widefield", "Eclipse Ti2E", "invert",   "552005",      "4.3D",
+  "Marín",     "Scientifica",    "",             "",           "multiphoton","",            "invert",     "",          "4.33",
+  "Berninger", "880_Invert",     "Zeiss",       "LSM 880",     "confocal",  "Observer",     "invert",   "2850000269",  "4.11",
+  "Berninger", "WF_Invert",      "Zeiss",       "Observer",    "widefield", "Observer 7",   "invert",   "3858002107",  "4.11",
+  "Ch'ng",     "WF_1",           "Nikon",       "Eclipse TiE", "widefield", "TiE",          "invert",   "536592",      "4.7",
+  "Ch'ng",     "WF_2",           "Nikon",       "Eclipse TiE", "widefield", "TiE",          "invert",   "531964",      "4.7",
+  "Long",      "Nikon_AX",       "Nikon",       "Eclipse Ti2E","confocal",  "Ti2E",         "inverted", "551770",      "4.33C",
+  "Grubb",     "LSM_710",        "Zeiss",       "LSM 710",     "confocal",  "Examiner",     "upright",  "2502000475",  "4.33",
+  "Rico",      "Leica SP8",      "Leica",       "SP8",         "confocal",  "DMI 6000 B",   "invert",   "8100000479",  "4.3D",
+  "Rico",      "Stellaris",      "Leica",       "Stellaris",   "confocal",  "DMi 8",        "invert",   "8400000342",  "4.3D",
+  "Long",      "Olympus_WF",     "Olympus",     "IX 70",       "widefield", "IX 70",        "invert",   "8K18177",     "4.33B",
+  "Long",      "Nikon_AX_R",     "Nikon",       "Nikon AX R",  "confocal",  "Eclipse Ti2E", "invert",   "",            "4.33B",
+  "Berninger", "",               "",            "",            "multiphoton", "",           "",         "",            "4.3N",
+  "Rico",      "",               "",            "",            "multiphoton", "",           "",         "",            "4.3N",
+  "Kostadinov","",               "",            "",            "multiphoton", "",           "",         "",            "4.3N",
+  "Berninger", "",               "",            "",            "Electophysiology", "",           "",         "",            "4.3A",
+  "Grubb", "",               "",            "",            "Electophysiology", "",           "",         "",            "4.3A",
+  "Grubb", "",               "",            "",            "Electophysiology", "",           "",         "",            "4.3A",
+  "Rico", "",               "",            "",            "Electophysiology", "",           "",         "",            "4.3A",
+  "Marín", "",               "",            "",            "Electophysiology", "",           "",         "",            "4.3A",
+  "Burrone", "",               "",            "",            "Electophysiology", "",           "",         "",            "4.3A",
+  "Burrone", "",               "",            "",            "Electophysiology", "",           "",         "",            "4.3A"
+  )
 
 # ----------------------------
 # Lenses (grouped by system via comments)
@@ -247,7 +257,7 @@ detector_df <- tribble(
 
   "Long", "Nikon_AX_R", "", NA, "Nikon Corporation", "PMT",
   
-  "Grubb", "LSM_710", "", NA, "Nikon Corporation", "PMT"
+  "Grubb", "LSM_710", "", NA, "Carl Zeiss GmbH", "PMT"
 )
 
 
@@ -258,7 +268,7 @@ detector_df <- detector_df |>
 camera_df <- tribble(
   ~owner, ~system_name, ~name, ~array_width, ~array_height, ~pixel_width, ~pixel_height, ~pixel_size_unit, ~full_well_capacity,
   ~max_digitization_bit_depth, ~read_noise, ~readout_speed, ~fps, ~dynamic_range, ~exp_time_min, ~exp_time_max, ~exp_time_unit, 
-  ~gain, ~electron_conversion_factor, ~quantum_efficiency, ~color, ~offset,
+  ~gain, ~electron_conversion_factor, ~quantum_efficiency, ~color, ~offset,# ~link,
   
   "Ch'ng", "WF_1", "Orca-R2", 1024, 1344, 6.45, 6.45, "micrometers", 18000, 16, 6, 14, 8.5, 3000, 0.00001, 4200, "seconds", NA, NA, 0.7, FALSE, NA,
   "Ch'ng", "WF_1", "Orca-R2", 1024, 1344, 6.45, 6.45, "micrometers", 36000, 16, 6, 14, 8.5, 6000, 0.00001, 4200, "seconds", NA, NA, 0.7, FALSE, NA,

@@ -80,6 +80,9 @@ ui <- fluidPage(
                  pickerInput("system_filter_len", "System:",
                              choices = sort(unique(lens_df$system_name)), multiple = TRUE,
                              options = list(`actions-box` = TRUE)),
+                 pickerInput("manuf_filter_len", "Manufacturer:",
+                             choices = sort(unique(lens_df$manufacturer)), multiple = TRUE,
+                             options = list(`actions-box` = TRUE)),
                  pickerInput("imm_filter_len", "Immersion Medium:",
                              choices = sort(unique(lens_df$immersion)), multiple = TRUE,
                              options = list(`actions-box` = TRUE)),
@@ -123,6 +126,12 @@ ui <- fluidPage(
                              options = list(`actions-box` = TRUE)),
                  pickerInput("system_filter_det", "System:",
                              choices = sort(unique(detector_df$system_name)), multiple = TRUE,
+                             options = list(`actions-box` = TRUE)),
+                 pickerInput("manuf_filter_det", "Manufacturer:",
+                             choices = sort(unique(detector_df$manufacturer)), multiple = TRUE,
+                             options = list(`actions-box` = TRUE)),
+                 pickerInput("type_filter_det", "Type:",
+                             choices = sort(unique(detector_df$type)), multiple = TRUE,
                              options = list(`actions-box` = TRUE)),
                  hr(),
                  h4("Customize Table"),
@@ -231,6 +240,7 @@ server <- function(input, output, session) {
     
     if (!is.null(input$owner_filter_len) && length(input$owner_filter_len) > 0) df <- df %>% filter(owner %in% input$owner_filter_len)
     if (!is.null(input$imm_filter_len) && length(input$imm_filter_len) > 0) df <- df %>% filter(immersion %in% input$imm_filter_len)
+    if (!is.null(input$manuf_filter_len) && length(input$manuf_filter_len) > 0) df <- df %>% filter(manufacturer %in% input$manuf_filter_len)
     
     # Magnification slider filter (handle NA)
     if (!is.null(input$mag_filter_len)) {
@@ -255,6 +265,7 @@ server <- function(input, output, session) {
     updatePickerInput(session, "owner_filter_len", selected = character(0))
     updatePickerInput(session, "system_filter_len", selected = character(0))
     updatePickerInput(session, "imm_filter_len", selected = character(0))
+    updatePickerInput(session, "manuf_filter_len", selected = character(0))
     updateSliderInput(session, "mag_filter_len",
                       value = c(floor(min(lens_df$magnification, na.rm = TRUE)), ceiling(max(lens_df$magnification, na.rm = TRUE))))
     updateSliderInput(session, "na_filter_len",
@@ -286,6 +297,8 @@ server <- function(input, output, session) {
     }
     
     if (!is.null(input$owner_filter_det) && length(input$owner_filter_det) > 0) df <- df %>% filter(owner %in% input$owner_filter_det)
+    if (!is.null(input$manuf_filter_det) && length(input$manuf_filter_det) > 0) df <- df %>% filter(manufacturer %in% input$manuf_filter_det)
+    if (!is.null(input$type_filter_det) && length(input$type_filter_det) > 0) df <- df %>% filter(type %in% input$type_filter_det)
     df
   })
   
@@ -301,6 +314,8 @@ server <- function(input, output, session) {
   observeEvent(input$reset_det, {
     updatePickerInput(session, "owner_filter_det", selected = character(0))
     updatePickerInput(session, "system_filter_det", selected = character(0))
+    updatePickerInput(session, "manuf_filter_det", selected = character(0))
+    updatePickerInput(session, "type_filter_det", selected = character(0))
     updateCheckboxGroupInput(session, "columns_det", selected = names(detector_df))
   })
   
