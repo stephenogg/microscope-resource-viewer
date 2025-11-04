@@ -226,7 +226,7 @@ detector_df <- tribble(
   "center", "AxioScan.Z1", "Axiocam 105c", NA, "Carl Zeiss GmbH", "CCD",
   "center", "AxioScan.Z1", "Hitachi F203SCL", NA, "Hitachi", "CCD",
   
-  "center", "Ultramicroscope", "pco.EDGE", NA, "Photon Lines Optical Solutions", "sCMOS",
+  "center", "Ultramicroscope", "pco.EDGE 5.5", "70108072645", "Excelitas", "sCMOS",
 
   
   "Marín", "Apotome", "Axiocam 503m", "426559-0000-000", "Carl Zeiss GmbH", "CCD",
@@ -290,7 +290,7 @@ camera_df <- tribble(
   "center", "AxioScan.Z1", "Axiocam 105c", 2560, 1920, 2.2, 2.2, "micrometers", NA, 8, NA, NA, 15, NA, 0.000030, 1, "seconds", NA, NA, NA, TRUE, NA,
   "center", "AxioScan.Z1", "Hitachi F203SCL", 1600, 1200, 4.4, 4.4, "micrometers", NA, 8, NA, 72, 30, 2500, 0.00001, 1, "seconds", NA, NA, 0.76, TRUE, NA,
   
-  "center", "Ultramicroscope", "pco.EDGE", 2048, 2048, 6.5, 6.5, "micrometers", NA, NA, 0.8, NA, 100, NA, NA, NA, NA, NA, NA, 0.82, FALSE, NA,
+  "center", "Ultramicroscope", "pco.EDGE 5.5", 2560, 2160, 6.5, 6.5, "micrometers", 30000, 16, 1, 100, 100, 30000, 0.000500, 2, "seconds", NA, NA, 0.60, FALSE, NA,
   
   "Long", "Olympus_WF", "CellCam 4612MT", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA
 )
