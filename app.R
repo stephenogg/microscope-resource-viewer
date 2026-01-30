@@ -22,7 +22,7 @@ load("microscope_data.RData") # system_df, lens_df, detector_df, column_help
 
 ui <- fluidPage(
   theme = bs_theme(bootswatch = "flatly"),
-  titlePanel("🔬 Microscope Resource Visualization"),
+  titlePanel("🔬 CDN Microscope Resource Visualization"),
   
   tabsetPanel(
     id = "main_tab",
