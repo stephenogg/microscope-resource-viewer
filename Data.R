@@ -12,26 +12,26 @@ library(tidyverse)
 # ----------------------------
 system_df <- tribble(
   ~owner,      ~system_name,    ~manufacturer, ~model,       ~type,       ~stand,         ~geometry, ~serial_number,  ~location,
-  "center",    "880_Invert",     "Zeiss",       "LSM 880",     "confocal",  "Observer.Z1",  "invert", "2802100109",  "4.1",
-  "center",    "800_Fish",       "Zeiss",       "LSM 800",     "confocal",  "Examiner.Z1",  "upright",  "2633000481",  "4.1",
-  "center",    "800_Histology",  "Zeiss",       "LSM 800",     "confocal",  "Imager.Z2",    "upright",  "2633000464",  "4.1",
+  "center",    "880_Invert",     "Zeiss",       "LSM 880",     "point scanning confocal",  "Observer.Z1",  "invert", "2802100109",  "4.1",
+  "center",    "800_Fish",       "Zeiss",       "LSM 800",     "point scanning confocal",  "Examiner.Z1",  "upright",  "2633000481",  "4.1",
+  "center",    "800_Histology",  "Zeiss",       "LSM 800",     "point scanning confocal",  "Imager.Z2",    "upright",  "2633000464",  "4.1",
   "center",    "Ultramicroscope","Miltenyi",    "Blaze",       "lightsheet","",             "upright",  "SN00017328",  "4.3P",
-  "center",    "880_Upright",    "Zeiss",       "LSM 880",     "confocal",  "Examiner.Z1",  "upright",  "2850000158",  "4.9",
+  "center",    "880_Upright",    "Zeiss",       "LSM 880",     "point scanning confocal",  "Examiner.Z1",  "upright",  "2850000158",  "4.9",
   "center",    "AxioScan.Z1",    "Zeiss",       "AxioScan.Z1", "widefield", "",             "upright",  "4646000314",  "4.3P",
   "Marín",     "Apotome",        "Zeiss",       "Apotome",     "widefield", "Imager.M2",    "upright",  "3525001936",  "4.3D",
   "Marín",     "coppaFISH",      "Nikon",       "Ti2E",        "widefield", "Eclipse Ti2E", "invert",   "552005",      "4.3D",
   "Marín",     "Scientifica",    "",             "",           "multiphoton","",            "invert",     "",          "4.33",
-  "Berninger", "880_Invert",     "Zeiss",       "LSM 880",     "confocal",  "Observer",     "invert",   "2850000269",  "4.11",
+  "Berninger", "880_Invert",     "Zeiss",       "LSM 880",     "point scanning confocal",  "Observer",     "invert",   "2850000269",  "4.11",
   "Berninger", "WF_Invert",      "Zeiss",       "Observer",    "widefield", "Observer 7",   "invert",   "3858002107",  "4.11",
   "Ch'ng",     "WF_1",           "Nikon",       "Eclipse TiE", "widefield", "TiE",          "invert",   "536592",      "4.7",
   "Ch'ng",     "WF_2",           "Nikon",       "Eclipse TiE", "widefield", "TiE",          "invert",   "531964",      "4.7",
   "Makeyev",    "WF_Fluorescence","Zeiss",    "Axio Observer 7", "widefield", "Oberver 7",    "invert", "3858000915", "4.33A",
-  "Long",      "Nikon_AX",       "Nikon",       "Eclipse Ti2E","confocal",  "Ti2E",         "invert", "551770",      "4.33C",
-  "Grubb",     "LSM_710",        "Zeiss",       "LSM 710",     "confocal",  "Examiner",     "upright",  "2502000475",  "4.33",
-  "Rico",      "Leica SP8",      "Leica",       "SP8",         "confocal",  "DMI 6000 B",   "invert",   "8100000479",  "4.3D",
-  "Rico",      "Stellaris",      "Leica",       "Stellaris",   "confocal",  "DMi 8",        "invert",   "8400000342",  "4.3D",
+  "Long",      "Nikon_AX",       "Nikon",       "Eclipse Ti2E","point scanning confocal",  "Ti2E",         "invert", "551770",      "4.33C",
+  "Grubb",     "LSM_710",        "Zeiss",       "LSM 710",     "point scanning confocal",  "Examiner",     "upright",  "2502000475",  "4.33",
+  "Rico",      "Leica SP8",      "Leica",       "SP8",         "point scanning confocal",  "DMI 6000 B",   "invert",   "8100000479",  "4.3D",
+  "Rico",      "Stellaris",      "Leica",       "Stellaris",   "point scanning confocal",  "DMi 8",        "invert",   "8400000342",  "4.3D",
   "Long",      "Olympus_WF",     "Olympus",     "IX 70",       "widefield", "IX 70",        "invert",   "8K18177",     "4.33B",
-  "Long",      "Nikon_AX_R",     "Nikon",       "Nikon AX R",  "confocal",  "Eclipse Ti2E", "invert",   "",            "4.33B",
+  "Long",      "Nikon_AX_R",     "Nikon",       "Nikon AX R",  "point scanning confocal",  "Eclipse Ti2E", "invert",   "",            "4.33B",
   "Berninger", "",               "",            "",            "multiphoton", "",           "",         "",            "4.3N",
   "Rico",      "",               "",            "",            "multiphoton", "",           "",         "",            "4.3N",
   "Kostadinov","",               "",            "",            "multiphoton", "",           "",         "",            "4.3N",
@@ -41,7 +41,12 @@ system_df <- tribble(
   "Rico",      "EPhys",          "Scientifica", "Slicescope II", "Electophysiology", "Olympus",   "upright", "24272",  "4.3A",
   "Marín",     "EPhys",          "Scientifica", "Slicescope",    "Electophysiology", "Olympus",   "upright", "003562", "4.3A",
   "Burrone",   "EPhys",          "Olympus",     NA,            "Electophysiology",  "Olympus",    "upright", "",       "4.3A",
-  "???",       "EPhys",          "Olympus",     "BX51 WIF",    "Electophysiology", "Olympus BX51 WIF",  "upright","",  "4.3A"
+  "???",       "EPhys",          "Olympus",     "BX51 WIF",    "Electophysiology", "Olympus BX51 WIF",  "upright","",  "4.3A",
+  "Houart",      "Nikon_C1",       "Nikon",       "C1",        "point scanning confocal",  "Nikon Ti",  "upright", NA,      "4.33A",
+  "Houart",     "Nikon_Stereo",       "Nikon",       "SMZ1500",        "stereoscope",  NA,  "upright", NA, "4.33A",
+  "Houart",     "Leica_Stereo",       "Leica",       "MZFL III",        "stereoscope", NA, "upright",   NA, "4.33A",
+  "Hindges",     "VAST_BioImager",       "Zeiss",       "Axio Observer",        "spinning disk confocal",  "Axio Observer",  "invert", NA, "4.33B"
+  
   )
 
 # ----------------------------
@@ -401,7 +406,7 @@ column_help <- list(
     system_name = "Short unique name for the system (e.g., '880_Invert').",
     manufacturer = "Microscope manufacturer (Zeiss, Nikon, Leica, etc.).",
     model = "Product model (e.g., LSM 880).",
-    type = "Microscope technique (confocal, widefield, multiphoton, lightsheet).",
+    type = "Microscope technique (point scanning confocal, widefield, multiphoton, lightsheet).",
     stand = "Microscope stand name or identifier (if provided).",
     geometry = "Orientation of the system: 'upright' or 'inverted'.",
     location = "Room number in NHH."
