@@ -53,6 +53,10 @@ system_df <- tribble(
   "Marín"      , "SP8"                , "Leica"       , NA                 , "multiphoton"             , "DMi8"             , "invert"  , NA             , "4.23K"   ,
   "Burrone"    , "EPhys2"             , "Scientifica" , "Slicescope"       , "Electophysiology"        , "IX 71"            , "upright" , NA             , "4.23K"   ,
   "Burrone"    , "Empty"              , NA            , NA                 , NA                        , NA                 , NA        , NA             , "4.23K"   ,
+  "Hindges"    , "Leica_Stereo"       , "Leica"       , "MC165 FC"         , "stereoscope"             , NA                 , "upright" , "56232113"     , "4.27"    ,
+  "Hindges"    , "ZebraFishScope"     , "Zeiss"       , "Axioskop"         , "widefield"               , "Axioskop 50"      , "upright" , "003272"       , "4.27"    ,
+  "Hindges"    , "ZebraFishScope2"    , "Zeiss"       , "Axioplan"         , "widefield"               , "Axioplan2"        , "upright" , "510355"       , "4.27"    ,
+  "???????"    , "Zeiss_Stereo"       , "Zeiss"       , "Discovery.V20"    , "stereoscope"             , NA                 , "upright" , "3920000248"   , "4.27"    ,
   
 )
 
@@ -92,6 +96,9 @@ lens_df <- tribble(
   "center"          , "800_Histology"      , "Plan-Apochromat"   , "Zeiss"       , "420650-9902-000"  ,  20            , 0.8                 ,  0.55 , 0.17 , "M27X0.75"     , "air"          , NA    , NA                            ,
   "center"          , "800_Histology"      , "EC Plan NEOFLUAR"  , "Zeiss"       , "420341-9911-000"  ,  10            , 0.3                 ,  5.2  , NA   , "M27X0.75"     , "air"          , NA    , "Ph1"                         ,
   "center"          , "800_Histology"      , "Plan-Apochromat"   , "Zeiss"       , "420630-9900-000"  ,   5            , 0.16                , 12.1  , 0.17 , "M27X0.75"     , "air"          , NA    , NA                            ,
+
+    # -- Lenses from the Leica Stero (center)
+  "center"         , "Leica_Stereo"       , "Plan Apochromat"   , "Leica"       , "1045028"          ,  1             , 0.3                 ,  61  , NA    , NA             , "air"          , NA    , NA                             ,
 
   # -- Lenses from the AxioScan.Z1 (center)
   "center"          , "AxioScan.Z1"        , "Plan-Apochromat"   , "Zeiss"       , "420130-9900-000"  ,   5            , 0.25                , 12.5  , 0.17 , "M27X0.75"     , "air"          , NA    , NA                            ,
@@ -230,6 +237,30 @@ lens_df <- tribble(
   "Hindges"         , "VAST_BioImager"     , "W Plan-Apochromat" , "Zeiss"       , "421440-9900"      ,  10            , 0.5                 ,  3.6  , 0    , "M27X0.75"     , "water"        , NA    , "nd=1.336"                    ,
   "Hindges"         , "VAST_BioImager"     , "W Plan-Apochromat" , "Zeiss"       , "421452-9800"      ,  20            , 1.0                 ,  1.8  , 0    , "M27X0.75"     , "water"        , NA    , NA                            ,
 )
+ # -- Lenses from the Hindges Lab Leica Stereoscope
+  "Hindges"         , "Leica_Stereo"       , "Plan Apochromat"   , "Leica"       , "1045028"          ,  1             , 0.3                 ,  61  , NA    , NA             , "air"          , NA    , NA                            ,
+
+  # -- Lenses from the Hindges lab Zeiss Axioskop 50
+  "Hindges"         , "ZebraFishScope"    , "Plan Neofluar"      , "Zeiss"       , "440310-0000-000"  ,  2.5           , 0.075               ,  9.3 , 0.17  , "W0.8x1/36"     , "air"          , NA    , NA                           ,
+  "Hindges"         , "ZebraFishScope"    , "Plan Neofluar"      , "Zeiss"       , "440320-0000-000"  ,  5             , 0.15                ,  13.6, 0.17  , "W0.8x1/36"     , "air"          , NA    , "DIC"                           ,
+  "Hindges"         , "ZebraFishScope"    , "Plan Neofluar"      , "Zeiss"       , "440340-0000-000"  ,  20            , 0.5                 ,  1.3 , 0.17  , "W0.8x1/36"     , "air"          , NA    , "DIC"                           ,
+  "Hindges"         , "ZebraFishScope"    , "Plan Neofluar"      , "Zeiss"       , "440350-0000-000"  ,  40            , 0.75                ,  0.5 , 0.17  , "W0.8x1/36"     , "air"          , NA    , "DIC"                           ,
+ 
+ # -- Lenses from the Hindges lab Zeiss Axioplan2
+  "Hindges"         , "ZebraFishScope2"    , "Plan Neofluar"      , "Zeiss"       , "440300-0000-000"  ,  1.25          , 0.035               ,  3.5 , 0.17  , "W0.8x1/36"     , "air"          , NA    , NA                           ,
+  "Hindges"         , "ZebraFishScope2"    , "Plan Neofluar"      , "Zeiss"       , "440310-0000-000"  ,  2.5           , 0.075               ,  9.3 , 0.17  , "W0.8x1/36"     , "air"          , NA    , NA                           ,
+  "Hindges"         , "ZebraFishScope2"    , "Fluar"              , "Zeiss"       , "440125-0000-000"  ,  5             , 0.25                ,  12.5, 0.17  , "W0.8x1/36"     , "air"          , NA    , NA                           ,
+  "Hindges"         , "ZebraFishScope2"    , "Plan Neofluar"      , "Zeiss"       , "440135-0000-000"  ,  10            , 0.5                 ,  1.9 , 0.17  , "W0.8x1/36"     , "air"          , NA    , NA                           ,
+  "Hindges"         , "ZebraFishScope2"    , "Plan Neofluar"      , "Zeiss"       , "440340-0000-000"  ,  20            , 0.5                 ,  1.3 , 0.17  , "W0.8x1/36"     , "air"          , NA    , NA                           ,
+  "Hindges"         , "ZebraFishScope2"    , "Plan Neofluar"      , "Zeiss"       , "440450-0000-000"  ,  40            , 1.3                 ,  0.21, 0.17  , "W0.8x1/36"     , "oil"          , NA    , NA                           ,
+  
+# -- Lenses from the ????????? lab Zeiss Discovery.V20
+  "???????"    , "Zeiss_Stereo"            , "Plan S"             , "Zeiss"       , "435200-0000-000"  , 1              , 0.04                , 81   , NA    , NA              , NA             , NA    , NA                           ,
+
+
+
+
+
 
 # Convert numeric-looking columns to numeric (they may already be)
 lens_df <- lens_df %>%
