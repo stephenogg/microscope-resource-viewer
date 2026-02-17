@@ -17,10 +17,11 @@ system_df <- tribble(
   "center"     , "800_Histology"      , "Zeiss"       , "LSM 800"          , "point scanning confocal" , "Imager.Z2"        , "upright" , "2633000464"   , "4.1"     ,
   "center"     , "Ultramicroscope"    , "Miltenyi"    , "Blaze"            , "lightsheet"              , ""                 , "upright" , "SN00017328"   , "4.3P"    ,
   "center"     , "880_Upright"        , "Zeiss"       , "LSM 880"          , "point scanning confocal" , "Examiner.Z1"      , "upright" , "2850000158"   , "4.9"     ,
+  "center"     , "Leica_Stereo"       , "Leica"       , "M165 FC"          , "stereoscope"             , NA                 , "upright" , NA             , "4.9"     ,
   "center"     , "AxioScan.Z1"        , "Zeiss"       , "AxioScan.Z1"      , "widefield"               , ""                 , "upright" , "4646000314"   , "4.3P"    ,
   "Marín"      , "Apotome"            , "Zeiss"       , "Apotome"          , "widefield"               , "Imager.M2"        , "upright" , "3525001936"   , "4.3D"    ,
   "Marín"      , "coppaFISH"          , "Nikon"       , "Ti2E"             , "widefield"               , "Eclipse Ti2E"     , "invert"  , "552005"       , "4.3D"    ,
-  "Marín"      , "Scientifica"        , ""            , ""                 , "multiphoton"             , ""                 , "invert"  , ""             , "4.33"    ,
+  "?????"      , "Scientifica"        , ""            , ""                 , "Electophysiology"        , NA                 , "invert"  , ""             , "4.33"    ,
   "Berninger"  , "880_Invert"         , "Zeiss"       , "LSM 880"          , "point scanning confocal" , "Observer"         , "invert"  , "2850000269"   , "4.11"    ,
   "Berninger"  , "WF_Invert"          , "Zeiss"       , "Observer"         , "widefield"               , "Observer 7"       , "invert"  , "3858002107"   , "4.11"    ,
   "Ch'ng"      , "WF_1"               , "Nikon"       , "Eclipse TiE"      , "widefield"               , "TiE"              , "invert"  , "536592"       , "4.7"     ,
@@ -40,13 +41,19 @@ system_df <- tribble(
   "Grubb"      , "Ephys2"             , "Nikon"       , NA                 , "Electophysiology"        , "Eclipse FN1"      , "upright" , "842484"       , "4.3A"    ,
   "Rico"       , "EPhys"              , "Scientifica" , "Slicescope II"    , "Electophysiology"        , "Olympus"          , "upright" , "24272"        , "4.3A"    ,
   "Marín"      , "EPhys"              , "Scientifica" , "Slicescope"       , "Electophysiology"        , "Olympus"          , "upright" , "003562"       , "4.3A"    ,
-  "Burrone"    , "EPhys"              , "Olympus"     , NA                 , "Electophysiology"        , "Olympus"          , "upright" , ""             , "4.3A"    ,
+  "Burrone"    , "EPhys1"             , "Olympus"     , NA                 , "Electophysiology"        , "Olympus"          , "upright" , ""             , "4.3A"    ,
   "???"        , "EPhys"              , "Olympus"     , "BX51 WIF"         , "Electophysiology"        , "Olympus BX51 WIF" , "upright" , ""             , "4.3A"    ,
   "Houart"     , "Nikon_C1"           , "Nikon"       , "Nikon C1"         , "point scanning confocal" , "Eclipse 80i"      , "upright" , NA             , "4.33A"   ,
   "Houart"     , "Nikon_fluorescence" , "Nikon"       , "Nikon E800"       , "widefield"               , "Eclipse E800"     , "upright" , NA             , "4.33A"   ,
   "Houart"     , "Nikon_Stereo"       , "Nikon"       , "SMZ1500"          , "stereoscope"             , NA                 , "upright" , NA             , "4.33A"   ,
   "Houart"     , "Leica_Stereo"       , "Leica"       , "MZFL III"         , "stereoscope"             , NA                 , "upright" , NA             , "4.33A"   ,
-  "Hindges"    , "VAST_BioImager"     , "Zeiss"       , "Axio Examiner.D1" , "spinning disk confocal"  , "Axio Examiner"    , "upright" , NA             , "4.33B"
+  "Hindges"    , "VAST_BioImager"     , "Zeiss"       , "Axio Examiner.D1" , "spinning disk confocal"  , "Axio Examiner"    , "upright" , NA             , "4.33B"   ,
+  "Marín"      , "Leica_Confocal"     , "Leica"       , "TCS SP8"          , "point scanning confocal" , "Leica DMi8"       , "invert"  , "8100000624"   , "4.23K"   ,
+  "Marín"      , "2P"                 , "Olympus"     , NA                 , "multiphoton"             , NA                 , "upright" , NA             , "4.23K"   ,
+  "Marín"      , "SP8"                , "Leica"       , NA                 , "multiphoton"             , "DMi8"             , "invert"  , NA             , "4.23K"   ,
+  "Burrone"    , "EPhys2"             , "Scientifica" , "Slicescope"       , "Electophysiology"        , "IX 71"            , "upright" , NA             , "4.23K"   ,
+  "Burrone"    , "Empty"              , NA            , NA                 , NA                        , NA                 , NA        , NA             , "4.23K"   ,
+  
 )
 
 # ----------------------------
@@ -366,6 +373,10 @@ camera_df <- tribble(
   "Rico"                      , "EPhys"                     , "Orca-R2"           ,         1024 ,           1344 , 6.45          , 6.45          , "micrometers"    ,               18000 , 16 , 6   ,  14   ,   8.5 ,  3000 , 0.00001  , 4200 , "seconds" , NA , NA , 0.7  , FALSE , NA ,
   "Marín"                     , "EPhys"                     , "Orca-R2"           ,         1024 ,           1344 , 6.45          , 6.45          , "micrometers"    ,               18000 , 16 , 6   ,  14   ,   8.5 ,  3000 , 0.00001  , 4200 , "seconds" , NA , NA , 0.7  , FALSE , NA ,
   "Berninger"                 , "EPhys"                     , "Retiga R1"         ,         1392 ,           1040 , 6.5           , 6.5           , "micrometers"    ,               20500 , 14 , 6.5 , NA    ,  30   ,  3000 , NA       , NA   , "seconds" , NA , NA , 0.75 , FALSE , NA ,
+  
+  
+  "Burrone"                   , "EPhys2"                    , "Orca-Flash 4.0"    ,         2048 ,           2048 , 6.5           , 6.5           , "micrometers"    ,               30000 , 16 , 0.8 , 126   ,  30   , 37500 , 0.000006 ,   10 , "seconds" , NA , NA , 0.82 , FALSE , NA ,
+  "Burrone"                   , "EPhys2"                    , "Orca-Flash 4.0"    ,         2048 ,           2048 , 6.5           , 6.5           , "micrometers"    ,               30000 , 16 , 1.4 , 419   , 100   , 37500 , 0.000006 ,   10 , "seconds" , NA , NA , 0.82 , FALSE , NA ,
 )
 camera_df <- camera_df |>
   mutate(owner_system = paste(owner, "_", system_name))
